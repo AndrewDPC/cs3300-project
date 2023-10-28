@@ -9,3 +9,4 @@ from django.db import models
     #Name of the Lego set on display
     #Description of the Lego set on display
     #Overall rating of the Lego set on display
+    
