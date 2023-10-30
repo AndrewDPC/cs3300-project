@@ -2,11 +2,14 @@ from django.db import models
 
 # Create your models here.
 
-#Class for a Lego set on display for users to look at
-#class LegoSet(models.Model):
+class LegoSet(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(max_length= 400)
+
+    ageRating = models.CharField(max_length=3)
+    totalBricks = models.CharField(max_length=4)
+    setNumber = models.CharField(max_length=7)
+    year = models.CharField(max_length= 4)
     
-    #Image of the Lego set on display
-    #Name of the Lego set on display
-    #Description of the Lego set on display
-    #Overall rating of the Lego set on display
-    
+    #rating = find the average of all ratings
+    #review objects (cuz lego sets can have many reviews)
