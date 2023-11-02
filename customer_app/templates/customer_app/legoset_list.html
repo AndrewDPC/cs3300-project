@@ -1,0 +1,46 @@
+{% extends 'customer_app/baseTemplate.html' %}
+
+<!-- <a href="{{ set.get_absolute_url }}">{{ set.title }}</a> -->
+
+{% block content %}
+  <h1>Browsing</h1>
+  {% if legoset_list %}
+<div class = "container">
+  <div class="row g-3">
+
+      {% for set in legoset_list %}
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              
+              <!-- Title -->
+              <h5 class="card-title"> {{set.title}} </h5>
+              
+              <!-- Age rating, total bricks used, item number, the release year, and the overall rating-->
+              <ul class ="list-group list-group-flush">
+                <li class="list-group-item"> Ages: {{set.ageRating}} </li>
+                <li class="list-group-item"> Pieces: {{set.totalBricks}} </li>
+                <li class="list-group-item"> Item #: {{set.setNumber}} </li>
+                <li class="list-group-item"> Release Year: {{set.year}} </li>
+
+                <!-- NEED TO LIST THE OVERALL RATING -->
+
+              </ul>
+
+              <!-- Button to view the specific set -->
+              <div class="card-footer" style="text-align: right;">
+                <a href="#" class="btn btn-primary">Details</a>
+             </div>
+
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+       
+  </div>
+</div>
+
+  {% else %}
+    <p>There are no LEGO sets registered.</p>
+  {% endif %}
+{% endblock %}
