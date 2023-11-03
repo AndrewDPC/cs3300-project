@@ -8,7 +8,12 @@ from django.views import generic
 def index(request):
     return render( request, 'customer_app/homepage.html')
 
-#Display of Lego Sets when browsing
+#Display of LEGO Sets when browsing
 class SetListView(generic.ListView):
+
+    model = LegoSet
+
+#Detailed view of a specific LEGO set
+class SetDetailView(generic.DetailView):
 
     model = LegoSet

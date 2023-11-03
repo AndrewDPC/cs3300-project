@@ -11,6 +11,9 @@
       {% for set in legoset_list %}
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card">
+            
+             <!-- Image -->
+            <img src="{{ set.image.url }}" class="card-img-top" height="320">
             <div class="card-body">
               
               <!-- Title -->
@@ -20,7 +23,7 @@
               <ul class ="list-group list-group-flush">
                 <li class="list-group-item"> Ages: {{set.ageRating}} </li>
                 <li class="list-group-item"> Pieces: {{set.totalBricks}} </li>
-                <li class="list-group-item"> Item #: {{set.setNumber}} </li>
+                <li class="list-group-item"> Set #: {{set.setNumber}} </li>
                 <li class="list-group-item"> Release Year: {{set.year}} </li>
 
                 <!-- NEED TO LIST THE OVERALL RATING -->
@@ -29,7 +32,7 @@
 
               <!-- Button to view the specific set -->
               <div class="card-footer" style="text-align: right;">
-                <a href="#" class="btn btn-primary">Details</a>
+                <a class="btn btn-primary" href="{{set.get_absolute_url}}" role="button"> Details </a>
              </div>
 
             </div>

@@ -9,5 +9,5 @@ urlpatterns = [
      path('browse/', views.SetListView.as_view(), name = 'browse'),
 
      #Path that leads to the detailed view of a LEGO set
-     
+     path('set-details/<int:pk>', views.SetDetailView.as_view(), name= 'set-details')
 ]
