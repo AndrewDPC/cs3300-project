@@ -1,27 +1,79 @@
 {% extends "customer_app/baseTemplate.html" %}
 
 {% block content %}
-  <!-- Add a container with image background -->
-  <div style="background-image: url('https://uploads-ssl.webflow.com/6507242ad3e4e6ff563301b1/6507242bd3e4e6ff563306ad_65030aebb32018840af701b7_64ff6a5c64bd2fd09dcf53ef_61.jpeg'); background-size: cover; background-repeat: no-repeat; background-position: center center; height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+
+  <style>
+
+
+    /*
+        background-size:cover -> makes it so that the image covers entire container
+        background-repeat: no-repeat -> Had a problem where the image would pop up as multiple squares of itself. Had to put this in so it wouldn't do that 
+       background-position: center center -> Positions the image center horizontally and vertically
+        height: calc(100vh -80vh) -> Having the navbar causes the image to go right under it and so causes unneccessary scrolling. Had to calculate the correct height
+        display: flex -> Allowed all the items inside this div become flex items which then I could use:
+                        align-items: center -> to center my content (container in this case) vertically 
+    */
+    .backgroundImage {
+
+      background-image: url('https://uploads-ssl.webflow.com/6507242ad3e4e6ff563301b1/6507242bd3e4e6ff563306ad_65030aebb32018840af701b7_64ff6a5c64bd2fd09dcf53ef_61.jpeg'); 
+      background-size: cover; 
+      background-repeat: no-repeat; 
+      background-position: center center; 
+      height: calc(100vh - 80px); 
+      display:flex; 
+      align-items: center;
+
+    }
+
+    /* Customization for my overview container  */
+    .overviewContainerStyle {
+
+      max-width: 700px; 
+      min-height: 300px; 
+      border: 10px groove black; 
+      background-color: white; 
+      padding: 30px;
+
+    }
+      
+    /* Font customization for my overview */
+    .overviewFont {
+
+      font-size: 20px; 
+      font-family: Verdana;
+
+    }
+
+    /* Spacing in between each item of my overview */
+    .overviewSpacing {
+
+      margin-top: 10px
+      
+    }
+
+  </style> 
+
+  <!-- 
+    Allows for my background to use an image while making sure whatever content I create within this div is aligned correctly.
+  -->
+  <div class="backgroundImage">
     
-    <div class="container" style="max-width: 600px; min-height: 600px; border: 1px solid; background-color: white;">
+    <!-- Create a container that will hold the overview of my website -->
+    <!-- Set width of the box, the minimum height, border type, background color, and padding-->
+    <div class="container overviewContainerStyle">
 
-        <h1 style="padding: 20px; text-align: center;"> Overview </h1>
-       
-        <p style="text-align: left; margin-top: 10px; font-size: 24px;"> 
-          Welcome to LEGO Reviews! Explore the creative world of LEGO from all generations, discovering and reliving iconic sets.
-          As you are browsing, you will be able to read reviews from fellow builders and gain valuable insight.
-          If you are a member of the community, you're able to be part of the conversation and share your thoughts!
-          Together, we will preserve the history of LEGO to ensure we will never forget where we came from and how far we have evolved.
+        <!-- Within this container, customize the text -->
+        <h1 style="text-align: center; margin-bottom: 20px;"> Overview </h1>
+         
+          <ul class="overviewFont">
+            <li class="overviewSpacing"> Welcome to LEGO Reviews! Discover and relive the creative world of LEGO from many different generations.</li>
+            <li class="overviewSpacing"> As you are browsing, you will be able to read reviews from fellow builders and gain valuable insight. </li>
+            <li class="overviewSpacing"> If you are a member of the community, you're able to be part of the conversation and share your thoughts! </li>
+          </ul>
 
-        </p>
-
-
-        <p style="text-align: center; margin-top: 30px; font-size: 18px;"> To get started, click "Browse" on the top of the page </p>
+        <p style="text-align: center; margin-top: 20px; font-size: 18px;"> To get started, click "Browse" on the top of the page </p>
 
     </div>
-
-    
-
   </div>
+  
 {% endblock %}

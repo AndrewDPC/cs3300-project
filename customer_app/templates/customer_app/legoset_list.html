@@ -1,38 +1,72 @@
 {% extends 'customer_app/baseTemplate.html' %}
 
-<!-- <a href="{{ set.get_absolute_url }}">{{ set.title }}</a> -->
-
 {% block content %}
+
+<style>
+
+  .cardInformation {
+
+    font-size: 15px; 
+    font-family: Verdana;
+    
+  }
+
+  .buttonStyle {
+
+    font-weight: bold; 
+    color: red; 
+    background-color: yellow; 
+    border: 2px solid black;
+    font-family: Verdana;
+  }
+
+</style>
+
   <h1>Browsing</h1>
+
+  <!-- Checks if there are LEGO sets to display-->
   {% if legoset_list %}
+
+<!-- Everything is in a container -->
 <div class = "container">
+  <!-- Row class to create horizontal groupings. The 'g-3' is used to create a grid system with 3-unit gap in between each item -->
   <div class="row g-3">
 
+      <!-- Goes through each LEGO set  -->
       {% for set in legoset_list %}
+        <!-- To create a responsive grid, the columns adjust according to screen size. -->
         <div class="col-12 col-md-6 col-lg-4">
+
+          <!-- Will be using cards to display my LEGO sets-->
           <div class="card">
-            
              <!-- Image -->
             <img src="{{ set.image.url }}" class="card-img-top" height="320">
-            <div class="card-body">
-              
-              <!-- Title -->
-              <h5 class="card-title"> {{set.title}} </h5>
-              
-              <!-- Age rating, total bricks used, item number, the release year, and the overall rating-->
-              <ul class ="list-group list-group-flush">
-                <li class="list-group-item"> Ages: {{set.ageRating}} </li>
-                <li class="list-group-item"> Pieces: {{set.totalBricks}} </li>
-                <li class="list-group-item"> Set #: {{set.setNumber}} </li>
-                <li class="list-group-item"> Release Year: {{set.year}} </li>
 
-                <!-- NEED TO LIST THE OVERALL RATING -->
+            <!-- Information -->
+            <div class="card-body">
+        
+              <!-- Title -->
+              <h5 class="card-title" style="font-size: 30px;"> {{set.title}} </h5>
+              
+              <!-- Age rating, total bricks, the release year, and the satisfaction rating-->
+              <ul class ="list-group list-group-flush cardInformation">
+
+                <li class="list-group-item"> Brick Count: {{set.totalBrickCount}} </li>
+                <li class="list-group-item"> Release Year: {{set.yearReleased}} </li>
+                <li class="list-group-item"> Age Rating: {{set.ageRating}} </li>
+                
+                <!-- Checks if set should display a satisfaction rate or not-->
+                {% if set.reviewCount > 0 %}
+                  <li class="list-group-item"> Satisfaction Rating: {{set.satisfactionRating|floatformat:2}}% ({{set.reviewCount}})  </li>
+                {% else %}
+                  <li class="list-group-item"> No Reviews Yet  </li>
+                {%endif%}
 
               </ul>
 
               <!-- Button to view the specific set -->
               <div class="card-footer" style="text-align: right;">
-                <a class="btn btn-primary" href="{{set.get_absolute_url}}" role="button"> Details </a>
+                <a class="btn buttonStyle" href="{{set.get_absolute_url}}" role="button"> Details </a>
              </div>
 
             </div>
@@ -44,6 +78,8 @@
 </div>
 
   {% else %}
-    <p>There are no LEGO sets registered.</p>
+
+    <p>There are no LEGO sets registered in the database.</p>
+
   {% endif %}
 {% endblock %}

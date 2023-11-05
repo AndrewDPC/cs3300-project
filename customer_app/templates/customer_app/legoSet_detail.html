@@ -1,34 +1,141 @@
 {% extends 'customer_app/baseTemplate.html' %}
 
-
 {% block content %}
 
-<div class="container" style="margin-top: 30px;">
+<style>
+    .review_card{
+      
+        border: 4px outset lightgray;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-family: Verdana;
+      }
+
+    .imageStyle {
+
+        width: 100%; 
+        max-width: 100%; 
+        margin-top: 100px;
+    }
+
+    .buttonStyle {
+
+        font-weight: bold; 
+        color: red; 
+        background-color: yellow; 
+        border: 2px solid black;
+        font-family: Verdana;
+    }
+
+    .informationContainer {
+
+        border: 10px ridge black; 
+        padding: 10px; 
+        margin-top: 100px;
+        width: 1000px;
+    }
+
+    .descriptionContainer {
+
+        border: 10px ridge black; 
+        padding: 10px;  
+        width: 1000px;
+        font-family: Verdana;
+
+    }
+
+    .userReviewContainer {
+
+        padding: 10px; 
+        width: 80%; 
+        margin-top: 50px; 
+        margin-bottom: 50px;
+
+    }
+
+    .titleFont {
+
+        text-align: left; 
+        font-size: 50px; 
+        text-decoration: underline; 
+        font-family: Verdana;
+
+    }
+
+    .informationFont {
+
+        font-size: 20px; 
+        font-family: Verdana;
+        text-align: center;
+    }
+
+    .ratingFont {
+
+        font-size: 25px;
+        font-family: Verdana;
+        text-align: right; 
+
+    }
+
+</style>
+
+<div class="container">
+    <!-- Align my information in a row -->
     <div class="row">
-        <div class="col-md-4">
+
+        <!-- Each column class is used to divide up the screen -->
+        <div class="col-md-4" style="border: 10px ridge black; margin-top: 100px; ;">
 
             <!-- Image -->
-            <img src="{{ legoset.image.url }}" style="width: 100%; max-width: 100%; margin-top: 100px;">
+            <img src="{{ legoset.image.url }}" class="imageStyle">
 
         </div>
+
         <div class="col-md-8">
 
             <!-- Information Container -->
-            <div class="container" style="border: 5px solid black; padding: 10px; margin-top: 100px;">
+            <div class="container informationContainer">
 
-                <h5 style="text-align: center; font-size: 50px; text-decoration: underline;">{{ legoset.title }}</h5>
-                <p style="font-size: 20px; text-align: center;">
-                    Release Year: {{ legoset.year }}<br><br>
-                    Age Rating: {{ legoset.ageRating }}<br><br>
-                    Set #: {{ legoset.setNumber }}<br><br>
-                    Total Bricks: {{ legoset.totalBricks }}
+                <h5 class="titleFont"> {{ legoset.title }}</h5>
+
+                <p  class="informationFont">
+                    Set #: {{ legoset.setNumber }}
                 </p>
-                <h5 style="text-align: center; font-size: 35px; text-decoration: underline;">PLACEHOLDER FOR STARS</h5>
+
+                <p class="informationFont">
+                    Brick Count: {{ legoset.totalBrickCount }}
+                </p>
+
+                <p class="informationFont">
+                    Minifigures: {{ legoset.minifigureCount }}
+               </p>
+
+               <p class="informationFont">
+                Release Year: {{ legoset.yearReleased }}       
+               </p>
+
+               <p  class="informationFont">
+                Age Rating: {{ legoset.ageRating }}
+               </p>
+
+
+                <!-- Display the average rating. If there aren't reviews, say so -->
+                <h2 class="ratingFont">
+                   
+                    {% if reviews %}
+                        Overall rating: {{ totalStars }}/{{ actualStars }} stars ({{legoset.reviewCount}})
+                        <br>({{legoset.satisfactionRating|floatformat:2}}% Satisfaction Rating)</br>
+
+                    {%else%}
+
+                        Overall rating: No Reviews Yet
+
+                    {%endif%}
+                </h2>
 
             </div>
-
             
-            <div class="container" style="border: 5px solid black; padding: 10px; width: 80%; margin-top: 10px;" >
+            <div class="container descriptionContainer" >
     
              <p style="text-align: left; font-size: 20px">Description: {{legoset.description}} </p>
 
@@ -38,13 +145,50 @@
     </div>
 </div>
 
-<div class="container" style="border: 5px solid black; padding: 10px; width: 80%; margin-top: 50px;" >
-    
-    <p style="text-align: left; font-size: 40px; padding: 10px;">Community Reviews:  </p>
 
-   </div>
+<!-- User Reviews -->
+<div class="container userReviewContainer">
+
+    <p style="text-align: left; font-size: 35px; padding: 5px; font-family: Verdana;">My Reviews:
+
+        <a class="btn buttonStyle" style="margin-top= -50;" href="{% url 'create-review' legoset.id %}" role="button">Create Review</a>
+    </p>  
+
+    <!-- Will display reviews if there are reviews -->
+    {% if reviews %}
+
+      <!-- Goes through each review and displays information -->
+      {% for review in reviews %}
+      <div class ="container review_card">
+            <h3>
+                <p> Rating: {{review.rating}} / 5 </p>
+                "{{review.title}}" 
+                <div class="float-end">
+                    <a class="btn buttonStyle" href="{% url 'edit-review' legoset.id review.id %}" role="button">Edit</a>
+                    <a class="btn buttonStyle" href="{% url 'delete-review' legoset.id review.id %}" role="button">Delete</a>
+                </div>
+            </h3>
+
+            <!-- Opinion goes here -->
+            <p style="font-size: 25px; margin-top: -30px;">
+
+                <br>
+                {{review.opinion}}
+                </br>
+
+            </p>
+
+        </div>
 
 
+      {% endfor %}
 
+  {% else %}
+
+    <p style="text-align: center; padding-bottom: 10px; font-size: 20px;">You have not made a review for this set yet!</p>
+
+  {% endif %}
+
+</div>
 
 {% endblock %}

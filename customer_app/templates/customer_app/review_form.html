@@ -1,0 +1,17 @@
+{% extends 'customer_app/baseTemplate.html' %}
+
+
+{% block content %}
+<div style="display: flex; align-items: center; justify-content: center; height: 80vh;">
+
+  <form action="" method="POST";>
+    {% csrf_token %}
+    <div style ="font-size: 25px;">
+    <table>{{ form.as_table }}</table>
+    <input type="submit" name="Submit" style="margin-left: 490px;">
+   </div>
+
+  </form>
+
+</div>
+{% endblock %}

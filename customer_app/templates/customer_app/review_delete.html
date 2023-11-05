@@ -1,0 +1,18 @@
+{% extends 'customer_app/baseTemplate.html' %}
+
+{% block content %}
+
+<!-- Allows my error message to display in the middle of the screen -->
+<div style="display: flex; align-items: center; justify-content: center; height: 80vh;">
+
+  <form method="post" style="text-align: center;">
+    {% csrf_token %}
+
+    <!-- Asks to confirm choice. If cancel, redirects back to previous page. If submit, sends a POST request-->
+    <h6>Are you sure you want to delete the review titled "{{review.title}}" ?</h6>
+    <a class="btn" style =" font-weight: bold; color: red; background-color: yellow;  border: 2px solid black;font-family: Verdana;" href="{% url 'set-details' review.legoSet_id %}">Cancel</a>
+    <button type="submit" name="Submit">Submit</button>
+
+  </form>
+</div>
+{% endblock %}
