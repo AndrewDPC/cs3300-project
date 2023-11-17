@@ -52,12 +52,12 @@ class LegoSet(models.Model):
         self.save()
 
     #Method that increments the review count variable everytime one is added
-    def increment_total_reviews(self):
+    def incrementReviews(self):
         self.reviewCount += 1
         self.save()
 
     #Method that decrements the review count variable everytime one is removed
-    def decrement_total_reviews(self):
+    def decrementViews(self):
         if self.reviewCount != 0:
             self.reviewCount -= 1
             self.save()
@@ -101,7 +101,7 @@ class Review(models.Model):
 
         #If it's a new review, then increment total reviews for the LEGO set
         if isNewReview:
-            self.legoSet.increment_total_reviews()  
+            self.legoSet.incrementReviews()  
 
    #Method that is called everytime a review is deleted
    #overriding the 'delete' method
@@ -115,4 +115,4 @@ class Review(models.Model):
 
         #Update the satisfaction rating and decrement the total reviews for a LEGO set 
         legoSet.updateSatisfactionRating()  
-        legoSet.decrement_total_reviews()  
+        legoSet.decrementViews()  

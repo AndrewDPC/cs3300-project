@@ -1,7 +1,16 @@
 from django.shortcuts import render, redirect
 from .models import *
+from django.contrib import messages
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.views import generic
-from .forms import ReviewForm
+from .forms import ReviewForm, CreateUserForm
+from .decorators import allowedUsers
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
 
 # Create your views here.
 
@@ -78,7 +87,7 @@ def createReview(request, set_id):
             #Now save it to the database
             review.save()
 
-            # Redirect back to the portfolio detail page
+            #Redirect back to the detailed page for a LEGO set
             return redirect('set-details', set_id)
 
     #Send correct data to the form
@@ -109,7 +118,7 @@ def editReview(request, set_id, review_id):
 
             #Redirect back to the detailed page for a LEGO set
             return redirect('set-details', set_id)
-        
+    
     #Send correct data to the form
     context = {'form': form}
     return render(request, 'customer_app/review_form.html', context)
@@ -136,4 +145,38 @@ def deleteReview(request, set_id, review_id):
     context = {'review': review}
     return render(request, 'customer_app/review_delete.html', context)
 
-  
+
+#View for registering a user
+def registerPage(request):
+
+    form = CreateUserForm()
+
+    if request.method =='POST':
+            
+        form = CreateUserForm(request.POST)
+
+        if form.is_valid():
+
+            #Save form to database and store the instance in variable
+            user = form.save()
+
+            #Get the username field from the validated data from the form
+            username = form.cleaned_data.get('username')
+
+            #Get the correct group
+            group = Group.objects.get(name='member')
+
+            #Add the user to the correct group
+            user.groups.add(group)
+
+            #Create success message 
+            messages.success(request, 'Account was created for ' + username)
+            return redirect('login')
+
+    context = {'form': form}
+    return render(request, 'registration/register.html', context)
+
+#View for the logging out
+def logoutSuccess(request):
+    logout(request)
+    return render( request, 'registration/logout.html')

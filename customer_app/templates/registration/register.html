@@ -1,0 +1,14 @@
+{% extends 'customer_app/baseTemplate.html' %}
+
+
+{% block content %}
+
+
+<form action= ""method="post">
+    {% csrf_token %}
+    <!-- Renders form as paragraph -->
+    {{ form.as_p }} 
+    <button type="submit" name="Register">Register</button>
+</form>
+
+{% endblock %}
