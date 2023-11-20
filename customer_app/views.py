@@ -6,11 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views import generic
 from .forms import ReviewForm, CreateUserForm
-from .decorators import allowedUsers
+from .decorators import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-
 
 # Create your views here.
 
@@ -36,19 +33,31 @@ class SetDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
 
         #Get all reviews associated with the LEGO set (query)
-        context['reviews'] = Review.objects.filter(legoSet=self.object)
+        #context['reviews'] = Review.objects.filter(legoSet=self.object)
+
+        #Get the current user's member instance
+        member = Member.objects.get(user=self.request.user)
+
+        #Get all reviews associated with the LEGO set and the current member
+        context['memberReviews'] = Review.objects.filter(legoSet=self.object, member=member)
+
+        #Get all reviews associated with the LEGO set that excludes the current member
+        context['otherReviews'] = Review.objects.filter(legoSet=self.object).exclude(member=member)
+
+        #Get all the reviews. Used for math
+        context['allReviews'] = Review.objects.filter(legoSet=self.object)
 
         #If there are reviews, then calculate stuff
-        if context['reviews']:
+        if context['allReviews']:
 
             #Get the sum of user ratings
-            totalStars = sum(review.rating for review in context['reviews'])
+            totalStars = sum(review.rating for review in context['allReviews'])
             context['totalStars'] = totalStars
 
             #Get how many actual stars there are for a set 
             #(EX: If there are two reviews for a set, there should be 10 actual stars since each review can give a max of 5 stars)
             actualStars = 0
-            for review in context['reviews']:
+            for review in context['allReviews']:
                 actualStars += 5
             context['actualStars'] = actualStars
 
@@ -56,6 +65,7 @@ class SetDetailView(generic.DetailView):
 
       
 #View for creating a review
+@allowedUsers(allowedRoles = ['member'])
 def createReview(request, set_id):
 
     #Set the form
@@ -84,6 +94,9 @@ def createReview(request, set_id):
             # Set the review relationship
             review.legoSet = legoSet
 
+            #Associate member with the review
+            review.member = request.user.member
+
             #Now save it to the database
             review.save()
 
@@ -96,6 +109,7 @@ def createReview(request, set_id):
 
 
 #View for editing a review
+@correctUser
 def editReview(request, set_id, review_id):
 
     #Get the correct review
@@ -124,6 +138,7 @@ def editReview(request, set_id, review_id):
     return render(request, 'customer_app/review_form.html', context)
 
 #View for deleting a review
+@correctUser
 def deleteReview(request, set_id, review_id):
 
     #Get the correct review
@@ -147,6 +162,7 @@ def deleteReview(request, set_id, review_id):
 
 
 #View for registering a user
+@unauthenticatedUser
 def registerPage(request):
 
     form = CreateUserForm()
@@ -169,6 +185,13 @@ def registerPage(request):
             #Add the user to the correct group
             user.groups.add(group)
 
+            #Create the member object and associate with user
+            Member.objects.create(
+
+                user=user,
+                userName = username
+            )
+
             #Create success message 
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
@@ -177,6 +200,7 @@ def registerPage(request):
     return render(request, 'registration/register.html', context)
 
 #View for the logging out
+@login_required(login_url='login')
 def logoutSuccess(request):
     logout(request)
     return render( request, 'registration/logout.html')

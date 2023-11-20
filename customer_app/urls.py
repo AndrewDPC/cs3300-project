@@ -1,4 +1,6 @@
 from django.urls import path, include
+from .decorators import *
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -21,6 +23,9 @@ urlpatterns = [
      #Path for deleting a review.
      path('set-details/<int:set_id>/delete-review/<int:review_id>', views.deleteReview, name="delete-review"),
 
+     #Path for login page. Re-written to apply decorator
+     path('accounts/login/', unauthenticatedUser(auth_views.LoginView.as_view()), name='login'),
+
      #Path for Django site authentication urls (for login, logout, password management)
      path('accounts/', include('django.contrib.auth.urls')),
 
@@ -28,6 +33,6 @@ urlpatterns = [
      path('accounts/register/', views.registerPage, name = 'register-page'),
 
      #Path for logging out
-     path('logout/', views.logoutSuccess, name ='logout')
+     path('logout/', views.logoutSuccess, name ='logout'),
 
 ]

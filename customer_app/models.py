@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse
 
 # Create your models here.
@@ -61,7 +62,22 @@ class LegoSet(models.Model):
         if self.reviewCount != 0:
             self.reviewCount -= 1
             self.save()
-      
+
+#Class for a logged in user
+class Member(models.Model):
+    #Fields to differentiate a user 
+    userName = models.CharField(max_length= 50)
+    #Name
+    #Email
+    #Date-Created
+    #Bio
+
+    #One to one relationship
+    user = models.OneToOneField(User, null= True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.userName
+    
 #Class for user reviews
 class Review(models.Model):
    
@@ -75,12 +91,15 @@ class Review(models.Model):
    ]
 
    #Fields for the title, opinion, and rating they choose to give
+   #Author
    title = models.CharField(max_length=50)
    opinion = models.TextField(max_length= 400)
    rating = models.IntegerField(choices=RATING_CHOICES, default = 0)
 
    #Create relationship to specific LEGO set
    legoSet = models.ForeignKey(LegoSet, on_delete=models.CASCADE)
+
+   member = models.ForeignKey(Member, null=True, on_delete=models.CASCADE)
 
    #Define default String to return the name for representing the Model object.
    def __str__(self):
