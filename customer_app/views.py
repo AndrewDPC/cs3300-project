@@ -35,15 +35,20 @@ class SetDetailView(generic.DetailView):
         #Get all reviews associated with the LEGO set (query)
         #context['reviews'] = Review.objects.filter(legoSet=self.object)
 
-        #Get the current user's member instance
-        member = Member.objects.get(user=self.request.user)
+        #Get all images associated with the LEGO set
+        context['setImages'] = LegoImages.objects.filter(legoSet=self.object)
 
-        #Get all reviews associated with the LEGO set and the current member
-        context['memberReviews'] = Review.objects.filter(legoSet=self.object, member=member)
+        #Check if admin is logged in or not
+        if(not self.request.user.is_staff):
+            #Get the current user's member instance
+            member = Member.objects.get(user=self.request.user)
 
-        #Get all reviews associated with the LEGO set that excludes the current member
-        context['otherReviews'] = Review.objects.filter(legoSet=self.object).exclude(member=member)
+            #Get all reviews associated with the LEGO set and the current member
+            context['memberReviews'] = Review.objects.filter(legoSet=self.object, member=member)
 
+            #Get all reviews associated with the LEGO set that excludes the current member
+            context['otherReviews'] = Review.objects.filter(legoSet=self.object).exclude(member=member)
+        
         #Get all the reviews. Used for math
         context['allReviews'] = Review.objects.filter(legoSet=self.object)
 

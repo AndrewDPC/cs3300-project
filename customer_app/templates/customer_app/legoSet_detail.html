@@ -30,16 +30,16 @@
     .informationContainer {
 
         border: 10px ridge black; 
-        padding: 10px; 
+        padding: 15px; 
         margin-top: 100px;
-        width: 1000px;
+        width: 600px;
     }
 
     .descriptionContainer {
 
         border: 10px ridge black; 
         padding: 10px;  
-        width: 1000px;
+        width: 600px;
         font-family: Verdana;
 
     }
@@ -56,9 +56,10 @@
     .titleFont {
 
         text-align: left; 
-        font-size: 50px; 
+        font-size: 34px; 
         text-decoration: underline; 
         font-family: Verdana;
+        margin-bottom: 16px;
 
     }
 
@@ -73,7 +74,7 @@
 
         font-size: 25px;
         font-family: Verdana;
-        text-align: right; 
+        text-align: center; 
 
     }
 
@@ -84,14 +85,75 @@
     <div class="row">
 
         <!-- Each column class is used to divide up the screen -->
-        <div class="col-md-4" style="border: 10px ridge black; margin-top: 100px; ;">
+        <div class="col-md-8" style="border: 10px ridge black; margin-top: 100px; padding: 40px;">
 
-            <!-- Image -->
-            <img src="{{ legoset.image.url }}" class="imageStyle">
+            <!-- Photo Carousel -->
+            <div id="setPhotos" class="carousel carousel-dark slide">
 
+                <!-- Carousel indicators -->
+                <div class="carousel-indicators" style="bottom: -40px"></div>
+
+                <!-- Carousel inner container (images)-->
+                <div class="carousel-inner" style="margin-bottom: 20px;"></div>
+
+                <!-- Carousel controls (previous) -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#setPhotos" data-bs-slide="prev" style="left: -80px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+                </button>
+
+                 <!-- Carousel controls (next) -->
+                <button class="carousel-control-next" type="button" data-bs-target="#setPhotos" data-bs-slide="next" style="right: -80px;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <!-- JavaScript for dynamically adding photos to carousel -->
+            <script>
+               
+                //Get all the images associated with the set using the query 
+                var setImages = [{% for image in setImages %}"{{ image.image.url }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
+            
+               //Get the carousel indicators and the inner container 
+                var indicatorsContainer = document.querySelector(".carousel-indicators");
+                var carouselInner = document.querySelector(".carousel-inner");
+            
+                //Loop through each image in the setImages array 
+                setImages.forEach(function (image, index) {
+                    
+                    //Create an indicator button 
+                    var indicator = document.createElement("button");
+                    indicator.type = "button";
+                    indicator.setAttribute("data-bs-target", "setPhotos");
+                    indicator.setAttribute("data-bs-slide-to", index.toString());
+                    indicatorsContainer.appendChild(indicator);
+                
+                    //Create the slide 
+                    var slide = document.createElement("div");
+                    slide.classList.add("carousel-item");
+                
+                    //Add the 'active' class only to the first slide 
+                    if (index === 0) {
+                        slide.classList.add("active");
+                        indicator.classList.add("active");
+                    }
+                
+                    //Create an image element within the slide 
+                    var imgElement = document.createElement("img");
+                    imgElement.src = image;
+                    imgElement.style.width = "800px";
+                    imgElement.style.height = "600px"; 
+                    slide.appendChild(imgElement);
+                
+                    //Add the slide to the carousel 
+                    carouselInner.appendChild(slide);
+                });
+
+            </script>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-4">
 
             <!-- Information Container -->
             <div class="container informationContainer">
@@ -125,6 +187,7 @@
                         Overall rating: {{ totalStars }}/{{ actualStars }} stars ({{legoset.reviewCount}})
                         <br>({{legoset.satisfactionRating|floatformat:2}}% Satisfaction Rating)</br>
 
+                    
                     {%else%}
 
                         Overall rating: No Reviews Yet

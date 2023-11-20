@@ -12,7 +12,7 @@ class LegoSet(models.Model):
     description = models.TextField(max_length= 400)
 
     #Some important information to include for a LEGO set 
-    image = models.ImageField()
+    thumbnail = models.ImageField()
     ageRating = models.CharField(max_length=3)
     setNumber = models.CharField(max_length=7)
     totalBrickCount = models.CharField(max_length=4)
@@ -62,6 +62,17 @@ class LegoSet(models.Model):
         if self.reviewCount != 0:
             self.reviewCount -= 1
             self.save()
+
+
+#Class for LEGO set images
+class LegoImages(models.Model):
+    legoSet = models.ForeignKey(LegoSet,on_delete=models.CASCADE)
+    image = models.ImageField()
+    imageTitle = models.CharField(max_length= 30,default= "")
+
+    #Define default String to return the name for representing the Model object.
+    def __str__(self):
+        return self.imageTitle
 
 #Class for a logged in user
 class Member(models.Model):
