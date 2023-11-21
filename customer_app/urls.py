@@ -18,10 +18,10 @@ urlpatterns = [
      path('set-details/<int:set_id>/create-review', views.createReview, name= 'create-review'),
 
      #Path for editing a review.
-     path('set-details/<int:set_id>/edit-review/<int:review_id>', views.editReview, name="edit-review"),
+     path('edit-review/<int:review_id>', views.editReview, name="edit-review"),
 
      #Path for deleting a review.
-     path('set-details/<int:set_id>/delete-review/<int:review_id>', views.deleteReview, name="delete-review"),
+     path('delete-review/<int:review_id>', views.deleteReview, name="delete-review"),
 
      #Path for login page. Re-written to apply decorator
      path('accounts/login/', unauthenticatedUser(auth_views.LoginView.as_view()), name='login'),

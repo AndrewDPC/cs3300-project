@@ -172,7 +172,7 @@
                 <h5 class="titleFont"> {{ legoset.title }}</h5>
 
                 <p  class="informationFont">
-                    Set #: {{ legoset.setNumber }}
+                    Set #: {{ legoset.setNumber }} 
                 </p>
 
                 <p class="informationFont">
@@ -279,8 +279,8 @@
                         </div>
 
                         <div class="float-end">
-                            <a class="btn buttonStyle" href="{% url 'edit-review' legoset.id review.id %}" role="button">Edit</a>
-                            <a class="btn buttonStyle" href="{% url 'delete-review' legoset.id review.id %}" role="button">Delete</a>
+                            <a class="btn buttonStyle" href="{% url 'edit-review' review.id %}" role="button">Edit</a>
+                            <a class="btn buttonStyle" href="{% url 'delete-review' review.id %}" role="button">Delete</a>
                         </div>
                     </h3>
 

@@ -114,17 +114,20 @@ def createReview(request, set_id):
             #Redirect back to the detailed page for a LEGO set
             return redirect('set-details', set_id)
 
-    #Send correct data to the form
-    context = {'form': form}
+    #Send correct data to the form and set id for page redirection
+    context = {'form': form, 'legoSetId': set_id}
     return render(request, 'customer_app/review_form.html', context)
 
 
 #View for editing a review
 @correctUser
-def editReview(request, set_id, review_id):
+def editReview(request, review_id):
 
     #Get the correct review
     review = Review.objects.get(id=review_id)
+
+    #Get the correct set. Will be used for page redirection
+    legoSet = review.legoSet.id
 
     #Populate the form with pre-existing information
     form = ReviewForm(instance = review)
@@ -147,30 +150,30 @@ def editReview(request, set_id, review_id):
             form.save()
 
             #Redirect back to the detailed page for a LEGO set
-            return redirect('set-details', set_id)
+            return redirect('set-details', legoSet)
     
-    #Send correct data to the form
-    context = {'form': form}
+    #Send correct data to the form and set id for page redirection
+    context = {'form': form, 'legoSetId':legoSet}
     return render(request, 'customer_app/review_form.html', context)
 
 #View for deleting a review
 @correctUser
-def deleteReview(request, set_id, review_id):
+def deleteReview(request, review_id):
 
     #Get the correct review
     review = Review.objects.get(id=review_id)
 
-    #Get the correct set. Will be used for checking
+    #Get the correct set. Will be used for page redirection
     legoSet = review.legoSet.id
 
     #Check if POST method was requested
-    if request.method == 'POST' and legoSet == set_id:
+    if request.method == 'POST':
 
         #Delete review from the database
         review.delete()
 
         #Redirect back to the detailed page for a LEGO set
-        return redirect('set-details', set_id)
+        return redirect('set-details', legoSet)
     
     #Send correct data to the form
     context = {'review': review}
