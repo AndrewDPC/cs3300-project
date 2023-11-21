@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ('title', 'opinion', 'rating')
+        fields = ('title', 'opinion')
 
 
 #Creating a user registration form with said fields

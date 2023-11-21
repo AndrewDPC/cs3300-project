@@ -20,7 +20,7 @@ def allowedUsers(allowedRoles = []):
 
             #If they are in the CORRECT group, 
             #Call the original view function
-            if group in allowedRoles:
+            if group in allowedRoles or request.user.is_staff:
                 return view_func(request, *args, **kwargs)
             else:
                 return HttpResponse("Error: You are not authorized to be on this page.")

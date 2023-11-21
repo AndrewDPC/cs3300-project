@@ -91,25 +91,15 @@ class Member(models.Model):
     
 #Class for user reviews
 class Review(models.Model):
-   
-   #Want to only allow users to choose from specific numbers. 
-   RATING_CHOICES = [ 
-      (1,'1'),
-      (2,'2'),
-      (3,'3'),
-      (4,'4'),
-      (5,'5'),
-   ]
 
    #Fields for the title, opinion, and rating they choose to give
    #Author
    title = models.CharField(max_length=50)
    opinion = models.TextField(max_length= 400)
-   rating = models.IntegerField(choices=RATING_CHOICES, default = 0)
+   rating = models.IntegerField(default = 0)
 
    #Create relationship to specific LEGO set
    legoSet = models.ForeignKey(LegoSet, on_delete=models.CASCADE)
-
    member = models.ForeignKey(Member, null=True, on_delete=models.CASCADE)
 
    #Define default String to return the name for representing the Model object.

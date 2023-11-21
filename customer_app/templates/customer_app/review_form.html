@@ -1,17 +1,92 @@
 {% extends 'customer_app/baseTemplate.html' %}
 
-
 {% block content %}
+
+<style>
+  .starSize {
+    font-size: 24px; 
+}
+
+.starFillColor {
+  color: orange;
+}
+
+.fa-star {
+    cursor: pointer;
+}
+
+</style>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <div style="display: flex; align-items: center; justify-content: center; height: 80vh;">
 
-  <form action="" method="POST";>
+  <form action="" method="POST">
     {% csrf_token %}
-    <div style ="font-size: 25px;">
-    <table>{{ form.as_table }}</table>
-    <input type="submit" name="Submit" style="margin-left: 490px;">
-   </div>
+    
+    <!-- Star rating section -->
+    <div class="starSize" style="margin-bottom: 20px; margin-left: 200px;">
+        <span style="font-weight: bold;">Rate this set: </span>
+        {% for i in '12345' %}
+            <span class="fa fa-star" data-rating="{{ i }}"></span>
+        {% endfor %}
+        <!-- Hidden input to store rating value -->
+        <input type="hidden" name="rating" id="rating" value="{{ form.instance.rating }}">
+    </div>
+
+    <!-- Other form fields -->
+    <div style="font-size: 25px;">
+        <table>{{ form.as_table }}</table>
+        <input type="submit" name="Submit" style="margin-left: 490px;">
+    </div>
 
   </form>
+
+  <!-- JavaScript for interaction -->
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        //Get all the star elements 
+        const stars = document.querySelectorAll(".fa-star");
+        //Select the hidden input that stores the rating value 
+        const ratingInput = document.getElementById("rating");
+        //Initialize with the inital value from form.instance 
+        let selectedRating = ratingInput.value;
+
+        //Highlight stars based off of initial rating (used for editing)
+        highlightStars(selectedRating);
+
+        //Add event listeners to each star 
+        stars.forEach((star, index) => {
+
+            //Hovering over a star, highlight stars up to the current index 
+            star.addEventListener("mouseover", function () {
+                highlightStars(index + 1);
+            });
+
+            //Reset highlighting based on the selected rating 
+            star.addEventListener("mouseout", function () {
+                highlightStars(selectedRating);
+            });
+
+            //Set the selected rating and update the form with input value 
+            star.addEventListener("click", function () {
+                selectedRating = index + 1;
+                ratingInput.value = selectedRating; 
+                highlightStars(selectedRating);
+            });
+        });
+
+        //Function that highlight stars up to a specified count 
+        function highlightStars(count) {
+            stars.forEach((star, index) => {
+                star.classList.toggle("starFillColor", index < count);
+            });
+        }
+    });
+  </script>
 
 </div>
 {% endblock %}

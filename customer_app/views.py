@@ -81,6 +81,9 @@ def createReview(request, set_id):
     #Check if POST method was requested
     if request.method == 'POST':
 
+        print(request.POST)
+        print(request.POST.get('rating'))
+
         #Create a copy of the POST data
         review_data = request.POST.copy()
 
@@ -101,6 +104,9 @@ def createReview(request, set_id):
 
             #Associate member with the review
             review.member = request.user.member
+
+            #Assign the rating from the POST data
+            review.rating = int(request.POST.get('rating', 0))
 
             #Now save it to the database
             review.save()
@@ -131,6 +137,11 @@ def editReview(request, set_id, review_id):
 
         #Validation of form
         if(form.is_valid):
+
+            #Assign the rating from the POST data
+            review.rating = int(request.POST.get('rating', 0))
+            #Now save it to the database
+            review.save()
 
             #Save the form
             form.save()
