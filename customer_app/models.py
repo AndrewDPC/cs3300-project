@@ -76,12 +76,15 @@ class LegoImages(models.Model):
 
 #Class for a logged in user
 class Member(models.Model):
+
     #Fields to differentiate a user 
     userName = models.CharField(max_length= 50)
-    #Name
-    #Email
-    #Date-Created
+    #First name
+    #Last name
+    #Date of birth
+
     #Bio
+    #Date-Created
 
     #One to one relationship
     user = models.OneToOneField(User, null= True, on_delete=models.CASCADE)
@@ -97,6 +100,7 @@ class Review(models.Model):
    title = models.CharField(max_length=50)
    opinion = models.TextField(max_length= 400)
    rating = models.IntegerField(default = 0)
+   dateCreated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
    #Create relationship to specific LEGO set
    legoSet = models.ForeignKey(LegoSet, on_delete=models.CASCADE)

@@ -25,14 +25,14 @@
 
         font-weight: bold; 
         color: red; 
-        background-color: yellow; 
+        background-color: gold; 
         border: 2px solid black;
         font-family: Verdana;
     }
 
     .informationContainer {
 
-        border: 10px ridge black; 
+        border: 6px ridge black; 
         padding: 15px; 
         margin-top: 100px;
         width: 600px;
@@ -40,7 +40,7 @@
 
     .descriptionContainer {
 
-        border: 10px ridge black; 
+        border: 6px ridge black; 
         padding: 10px;  
         width: 600px;
         font-family: Verdana;
@@ -68,14 +68,14 @@
 
     .informationFont {
 
-        font-size: 20px; 
+        font-size: 24px; 
         font-family: Verdana;
         text-align: center;
     }
 
     .ratingFont {
 
-        font-size: 25px;
+        font-size: 24px;
         font-family: Verdana;
         text-align: center; 
 
@@ -96,7 +96,7 @@
     <div class="row">
 
         <!-- Each column class is used to divide up the screen -->
-        <div class="col-md-8" style="border: 10px ridge black; margin-top: 100px; padding: 40px;">
+        <div class="col-md-8" style="border: 6px ridge black; margin-top: 100px; padding: 40px;">
 
             <!-- Photo Carousel -->
             <div id="setPhotos" class="carousel carousel-dark slide">
@@ -155,6 +155,7 @@
                     imgElement.src = image;
                     imgElement.style.width = "800px";
                     imgElement.style.height = "600px"; 
+                    imgElement.classList.add("img-fluid"); 
                     slide.appendChild(imgElement);
                 
                     //Add the slide to the carousel 
@@ -197,7 +198,6 @@
                     {% if allReviews %}
 
                         Overall rating:
-
                         <script>
                             //Calculate the number of stars to display 
                             //Scales the rating to fit within a 5 star rating system 
@@ -224,10 +224,10 @@
                                 }
                             }
                         </script>
-
-                        ({{legoset.reviewCount}})
+                        
+                        <span style="font-size: medium; font-family: Verdana;">{{overallRatingNum}}</span>
+                        with {{legoset.reviewCount}} reviews
                         <br>({{legoset.satisfactionRating|floatformat:2}}% Satisfaction Rating)</br>
-
                     {%else%}
 
                         Overall rating: No Reviews Yet
@@ -263,7 +263,7 @@
         {% if memberReviews %}
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0">My Reviews:</h1>
+            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline;">My Reviews:</h1>
             </div>
            
             <!-- Goes through each review and displays information -->
@@ -276,11 +276,17 @@
                                 <span class="fa fa-star {% if i|add:0 <= review.rating %}starFillColor{% endif %}" ></span>
                             {% endfor %}
                             <span> "{{review.title}}" </span>
+                            <p style="font-size: small;"> Review created on  {{ review.dateCreated|date:"F j, Y" }}</p>
                         </div>
 
                         <div class="float-end">
                             <a class="btn buttonStyle" href="{% url 'edit-review' review.id %}" role="button">Edit</a>
+                            <!--
                             <a class="btn buttonStyle" href="{% url 'delete-review' review.id %}" role="button">Delete</a>
+                             -->
+                            <button type="button" class="btn buttonStyle" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                Delete
+                            </button>
                         </div>
                     </h3>
 
@@ -290,12 +296,38 @@
                         {{review.opinion}}
                         </br>
                     </p>
-                </div>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteModalLabel">Warning</h1>
+                            </div>
+                            <div class="modal-body">
+                                <h6>Delete your review titled "{{review.title}}" ?</h6>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                <form action="{% url 'delete-review' review.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                </form>
+
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+             </div>
+
+
             {% endfor %}
         {% else %}
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0">My Reviews:</h1>
+            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline">My Reviews:</h1>
             <a class="btn buttonStyle" style="margin-top= -50;" href="{% url 'create-review' legoset.id %}" role="button">Create Review</a>
             </div>
             <p style="text-align: center; padding-bottom: 10px; font-size: 20px;">You have not made a review for this set yet!</p>
@@ -308,7 +340,7 @@
 <!-- Other Member Reviews -->
 <div class="container userReviewContainer">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0">Community Reviews:</h1>
+        <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline">Community Reviews:</h1>
     </div>
     <!-- Will display reviews if there are reviews -->
     {% if otherReviews %}

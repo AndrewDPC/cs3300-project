@@ -7,7 +7,6 @@ from django.contrib.auth import logout
 from django.views import generic
 from .forms import ReviewForm, CreateUserForm
 from .decorators import *
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -66,6 +65,11 @@ class SetDetailView(generic.DetailView):
                 actualStars += 5
             context['actualStars'] = actualStars
 
+            
+            #Get the overall rating in number form. (5-star rating system)
+            context['overallRatingNum'] = (totalStars/actualStars) * 5
+
+
         return context
 
       
@@ -93,8 +97,8 @@ def createReview(request, set_id):
         #Create a new form with the review data
         form = ReviewForm(review_data)
 
-        #Sees if the form is valid first. If so, then save it
-        if form.is_valid():
+        #Sees if the form is valid and if the rating is not 0. If so, then save it
+        if form.is_valid() and int(request.POST.get('rating', 0)) != 0:
 
             # Save the form without committing to the database
             review = form.save(commit=False)
@@ -113,6 +117,9 @@ def createReview(request, set_id):
 
             #Redirect back to the detailed page for a LEGO set
             return redirect('set-details', set_id)
+        else:
+            messages.error(request, "You forgot to rate the set!")
+                
 
     #Send correct data to the form and set id for page redirection
     context = {'form': form, 'legoSetId': set_id}
@@ -166,18 +173,11 @@ def deleteReview(request, review_id):
     #Get the correct set. Will be used for page redirection
     legoSet = review.legoSet.id
 
-    #Check if POST method was requested
-    if request.method == 'POST':
+    #Delete review from the database
+    review.delete()
 
-        #Delete review from the database
-        review.delete()
-
-        #Redirect back to the detailed page for a LEGO set
-        return redirect('set-details', legoSet)
-    
-    #Send correct data to the form
-    context = {'review': review}
-    return render(request, 'customer_app/review_delete.html', context)
+    #Redirect back to the detailed page for a LEGO set
+    return redirect('set-details', legoSet)
 
 
 #View for registering a user

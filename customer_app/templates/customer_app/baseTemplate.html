@@ -28,7 +28,9 @@
     <div class="container-fluid">
 
       <!-- Add website logo -->
-      <img src="{% static 'images/legoLogo.png' %}" style="width: 100px; height: 60px;" >
+      <a href="{% url 'index' %}">
+        <img src="{% static 'images/legoLogo.png' %}" style="width: 100px; height: 60px;">
+      </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarNav">

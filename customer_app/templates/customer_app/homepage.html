@@ -34,7 +34,19 @@
       background-color: white; 
       padding: 30px;
 
+      opacity: 0;
+      animation: fadeIn 1.5s ease-in-out forwards;
+
     }
+
+    @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
       
     /* Font customization for my overview */
     .overviewFont {
@@ -55,15 +67,15 @@
       color: black; 
       text-align: center;
       margin-bottom: 24px;
-      animation: glow 1s ease-in-out infinite alternate;
+      animation: glow 1.2s ease-in-out infinite alternate;
     }
 
     @-webkit-keyframes glow {
       from {
-        text-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red, 0 0 50px red, 0 0 60px red, 0 0 70px red;
+        text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold, 0 0 40px gold, 0 0 50px gold, 0 0 60px gold, 0 0 70px gold;
       }
       to {
-        text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold, 0 0 40px gold, 0 0 50px gold, 0 0 60px gold, 0 0 70px gold;
+        text-shadow: 0 0 20px red, 0 0 30px red, 0 0 40px red, 0 0 50px red, 0 0 60px red, 0 0 70px red;
       }
     }
 
@@ -73,7 +85,7 @@
     Allows for my background to use an image while making sure whatever content I create within this div is aligned correctly.
   -->
   <div class="backgroundImage">
-    
+  
     <!-- Create a container that will hold the overview of my website -->
     <!-- Set width of the box, the minimum height, border type, background color, and padding-->
     <div class="container overviewContainerStyle">

@@ -33,13 +33,20 @@
         {% endfor %}
         <!-- Hidden input to store rating value -->
         <input type="hidden" name="rating" id="rating" value="{{ form.instance.rating }}">
+
+        <!-- Error message -->
+        {% if messages %}
+          {% for message in messages %}
+            <span style="font-size:medium; font-weight: bold; color: red;"> <- {{message}} </span>
+          {% endfor %}
+        {% endif %}
     </div>
 
     <!-- Other form fields -->
     <div style="font-size: 25px;">
         <table>{{ form.as_table }}</table>
         <input type="submit" name="Submit" style="margin-left: 490px;">
-        <a class="btn" style =" font-weight: bold; color: red; background-color: yellow;  border: 2px solid black;font-family: Verdana;" href="{% url 'set-details' legoSetId %}">Cancel</a>
+        <a class="btn" style =" font-weight: bold; color: red; background-color: gold;  border: 2px solid black;font-family: Verdana;" href="{% url 'set-details' legoSetId %}">Cancel</a>
     </div>
 
   </form>
@@ -87,6 +94,7 @@
             });
         }
     });
+
   </script>
 
 </div>
