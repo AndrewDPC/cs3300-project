@@ -79,12 +79,11 @@ class Member(models.Model):
 
     #Fields to differentiate a user 
     userName = models.CharField(max_length= 50)
-    #First name
-    #Last name
-    #Date of birth
+    firstName = models.CharField(max_length= 50, default="")
+    lastName = models.CharField(max_length= 50, default="")
 
-    #Bio
-    #Date-Created
+    #bio = models.TextField(max_length= 200)
+    dateCreated = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     #One to one relationship
     user = models.OneToOneField(User, null= True, on_delete=models.CASCADE)

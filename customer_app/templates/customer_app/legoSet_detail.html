@@ -6,14 +6,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
-    .review_card{
-      
-        border: 4px outset lightgray;
-        padding: 10px;
-        margin-bottom: 10px;
-        font-family: Verdana;
-      }
-
     .imageStyle {
 
         width: 100%; 
@@ -29,8 +21,15 @@
         border: 2px solid black;
         font-family: Verdana;
     }
+    .reviewCard{
+      
+        border: 4px outset lightgray;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-family: Verdana;
+      }
 
-    .informationContainer {
+    .overviewContainer {
 
         border: 6px ridge black; 
         padding: 15px; 
@@ -47,13 +46,22 @@
 
     }
 
-    .userReviewContainer {
+    .reviewContainer {
 
         padding: 10px; 
         width: 80%; 
         margin-top: 50px; 
         margin-bottom: 50px;
 
+    }
+
+    .reviewHeaders {
+
+        text-align: left; 
+        padding: 5px; 
+        font-family: Verdana; 
+        margin: 0; 
+        text-decoration: underline;
     }
 
     .titleFont {
@@ -66,19 +74,11 @@
 
     }
 
-    .informationFont {
+    .overviewFont {
 
         font-size: 24px; 
         font-family: Verdana;
         text-align: center;
-    }
-
-    .ratingFont {
-
-        font-size: 24px;
-        font-family: Verdana;
-        text-align: center; 
-
     }
 
     .starSize {
@@ -168,32 +168,32 @@
         <div class="col-md-4">
 
             <!-- Information Container -->
-            <div class="container informationContainer">
+            <div class="container overviewContainer">
 
                 <h5 class="titleFont"> {{ legoset.title }}</h5>
 
-                <p  class="informationFont">
+                <p  class="overviewFont">
                     Set #: {{ legoset.setNumber }} 
                 </p>
 
-                <p class="informationFont">
+                <p class="overviewFont">
                     Brick Count: {{ legoset.totalBrickCount }}
                 </p>
 
-                <p class="informationFont">
+                <p class="overviewFont">
                     Minifigures: {{ legoset.minifigureCount }}
                </p>
 
-               <p class="informationFont">
+               <p class="overviewFont">
                 Release Year: {{ legoset.yearReleased }}       
                </p>
 
-               <p  class="informationFont">
+               <p  class="overviewFont">
                 Age Rating: {{ legoset.ageRating }}
                </p>
 
                 <!-- Display the average rating. If there aren't reviews, say so -->
-                <h2 class="ratingFont">
+                <h2 class="overviewFont">
                    
                     {% if allReviews %}
 
@@ -229,9 +229,7 @@
                         with {{legoset.reviewCount}} reviews
                         <br>({{legoset.satisfactionRating|floatformat:2}}% Satisfaction Rating)</br>
                     {%else%}
-
                         Overall rating: No Reviews Yet
-
                     {%endif%}
                 </h2>
             </div>
@@ -246,11 +244,11 @@
 </div>
 
 <!-- User Reviews -->
-<div class="container userReviewContainer">
+<div class="container reviewContainer">
 
     {%if not user.is_authenticated %}
 
-        <h1 style="text-align: left; padding: 5px; font-family: Verdana;">My Reviews:</h1>
+        <h1 class = "reviewHeaders">My Reviews:</h1>
         <div style="display: flex; align-items: center; justify-content: center; font-size: 20px; font-family: Verdana;">
             <p style="margin: 0; margin-right: 10px;">Log in to create and see your reviews here. </p>
             <p style="margin: 0;">Don't have an account?</p>
@@ -262,16 +260,15 @@
         <!-- Will display reviews if there are reviews -->
         {% if memberReviews %}
 
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline;">My Reviews:</h1>
-            </div>
+             <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline;">My Reviews:</h1>
            
             <!-- Goes through each review and displays information -->
             {% for review in memberReviews %}
-            <div class ="container review_card">
+            <div class ="container reviewCard">
                     <h3>
                         <!-- Add stars according to the rating -->
                         <div class="starSize">
+                            <p style ="font-size: medium;">Author: {{ review.member.userName }}<p>
                             {% for i in '12345' %}
                                 <span class="fa fa-star {% if i|add:0 <= review.rating %}starFillColor{% endif %}" ></span>
                             {% endfor %}
@@ -297,37 +294,40 @@
                         </br>
                     </p>
                     
-                    <!-- Modal -->
+                    <!-- Modal for review deletion -->
                     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deleteModalLabel">Warning</h1>
-                            </div>
-                            <div class="modal-body">
-                                <h6>Delete your review titled "{{review.title}}" ?</h6>
-                            </div>
-                            <div class="modal-footer">
+                            <div class="modal-content">
+                                <!-- Modal Title -->
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">WARNING!</h1>
+                                </div>
+                                <!-- Modal Body-->
+                                <div class="modal-body">
+                                    <p>Delete your review titled "{{review.title}}"?</p>
+                                    <p> This action cannot be undone. </p>
+                                </div>
+                                
+                                <!-- Modal Footer -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form action="{% url 'delete-review' review.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
 
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-                                <form action="{% url 'delete-review' review.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary">Delete</button>
-                                </form>
-
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
              </div>
-
-
             {% endfor %}
+
         {% else %}
 
+             <!-- Offer ability to create review. Users can only create one review per set  -->
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline">My Reviews:</h1>
+            <h1 class = "reviewHeaders">My Reviews:</h1>
             <a class="btn buttonStyle" style="margin-top= -50;" href="{% url 'create-review' legoset.id %}" role="button">Create Review</a>
             </div>
             <p style="text-align: center; padding-bottom: 10px; font-size: 20px;">You have not made a review for this set yet!</p>
@@ -338,22 +338,24 @@
 
 
 <!-- Other Member Reviews -->
-<div class="container userReviewContainer">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h1 style="text-align: left; padding: 5px; font-family: Verdana; margin: 0; text-decoration: underline">Community Reviews:</h1>
-    </div>
+<div class="container reviewContainer">
+    <!-- Header -->
+    <h1 class = "reviewHeaders">Community Reviews:</h1>
+
     <!-- Will display reviews if there are reviews -->
     {% if otherReviews %}
         <!-- Goes through each review and displays information -->
         {% for review in otherReviews %}
-            <div class ="container review_card">
+            <div class ="container reviewCard">
                     <h3>
                         <!-- Add stars according to the rating -->
                         <div class="starSize">
+                            <p style ="font-size: medium;">Author: {{ review.member.userName }}<p>
                             {% for i in '12345' %}
                             <span class="fa fa-star {% if i|add:0 <= review.rating %}starFillColor{% endif %}"></span>
                             {% endfor %}
                             <span> "{{review.title}}" </span>
+                            <p style="font-size: small;"> Review created on  {{ review.dateCreated|date:"F j, Y" }}</p>
                         </div>
 
                     </h3>

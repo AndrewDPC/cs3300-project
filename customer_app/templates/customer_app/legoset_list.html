@@ -6,7 +6,7 @@
 
   .cardInformation {
 
-    font-size: 15px; 
+    font-size: 16px; 
     font-family: Verdana;
     
   }
@@ -27,55 +27,55 @@
   <!-- Checks if there are LEGO sets to display-->
   {% if legoset_list %}
 
-<!-- Everything is in a container -->
-<div class = "container">
-  <!-- Row class to create horizontal groupings. The 'g-3' is used to create a grid system with 3-unit gap in between each item -->
-  <div class="row g-3">
+    <!-- Everything is in a container -->
+    <div class = "container">
+      <!-- Row class to create horizontal groupings. The 'g-3' is used to create a grid system with 3-unit gap in between each item -->
+      <div class="row g-3">
 
-      <!-- Goes through each LEGO set  -->
-      {% for set in legoset_list %}
-        <!-- To create a responsive grid, the columns adjust according to screen size. -->
-        <div class="col-12 col-md-6 col-lg-4">
+          <!-- Goes through each LEGO set  -->
+          {% for set in legoset_list %}
+            <!-- To create a responsive grid, the columns adjust according to screen size. -->
+            <div class="col-12 col-md-6 col-lg-4">
 
-          <!-- Will be using cards to display my LEGO sets-->
-          <div class="card">
-             <!-- Image -->
-            <img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">
+              <!-- Will be using cards to display my LEGO sets-->
+              <div class="card">
+                <!-- Image -->
+                <img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">
 
-            <!-- Information -->
-            <div class="card-body">
-        
-              <!-- Title -->
-              <h5 class="card-title" style="font-size: 30px;"> {{set.title}} </h5>
-              
-              <!-- Age rating, total bricks, the release year, and the satisfaction rating-->
-              <ul class ="list-group list-group-flush cardInformation">
+                <!-- Information -->
+                <div class="card-body">
+            
+                  <!-- Title -->
+                  <h5 class="card-title" style="font-size: 30px;"> {{set.title}} </h5>
+                  
+                  <!-- Age rating, total bricks, the release year, and the satisfaction rating-->
+                  <ul class ="list-group list-group-flush cardInformation">
 
-                <li class="list-group-item"> Brick Count: {{set.totalBrickCount}} </li>
-                <li class="list-group-item"> Release Year: {{set.yearReleased}} </li>
-                <li class="list-group-item"> Age Rating: {{set.ageRating}} </li>
-                
-                <!-- Checks if set should display a satisfaction rate or not-->
-                {% if set.reviewCount > 0 %}
-                  <li class="list-group-item"> Satisfaction Rating: {{set.satisfactionRating|floatformat:2}}% ({{set.reviewCount}})  </li>
-                {% else %}
-                  <li class="list-group-item"> No Reviews Yet  </li>
-                {%endif%}
+                    <li class="list-group-item"> Brick Count: {{set.totalBrickCount}} </li>
+                    <li class="list-group-item"> Release Year: {{set.yearReleased}} </li>
+                    <li class="list-group-item"> Age Rating: {{set.ageRating}} </li>
+                    
+                    <!-- Checks if set should display a satisfaction rate or not-->
+                    {% if set.reviewCount > 0 %}
+                      <li class="list-group-item"> Satisfaction Rating: {{set.satisfactionRating|floatformat:2}}% ({{set.reviewCount}})  </li>
+                    {% else %}
+                      <li class="list-group-item"> No Reviews Yet  </li>
+                    {%endif%}
 
-              </ul>
+                  </ul>
 
-              <!-- Button to view the specific set -->
-              <div class="card-footer" style="text-align: right;">
-                <a class="btn buttonStyle" href="{{set.get_absolute_url}}" role="button"> Details </a>
-             </div>
+                  <!-- Button to view the specific set -->
+                  <div class="card-footer" style="text-align: right;">
+                    <a class="btn buttonStyle" href="{{set.get_absolute_url}}" role="button"> Details </a>
+                </div>
 
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      {% endfor %}
-       
-  </div>
-</div>
+          {% endfor %}
+          
+      </div>
+    </div>
 
   {% else %}
 

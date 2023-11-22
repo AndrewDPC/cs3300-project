@@ -1,6 +1,55 @@
 {% extends 'customer_app/baseTemplate.html' %}
 
 {% block content %}
-  <p>Logged out!</p>
-  <a href="{% url 'login'%}">Click here to login again.</a>
+
+<style>
+
+  .backgroundImage {
+
+    background-image: url('https://uploads-ssl.webflow.com/6507242ad3e4e6ff563301b1/6507242bd3e4e6ff563306ad_65030aebb32018840af701b7_64ff6a5c64bd2fd09dcf53ef_61.jpeg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    height: calc(100vh - 76px); 
+    display:flex; 
+    align-items: center;
+
+  }
+
+  /* Used to make background opacity lower and color black */
+  .backgroundOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+  /* Customization for my Logout container  */
+  .logoutContainer {
+
+    max-width: 500px; 
+    min-height: 100px; 
+    background-color: white; 
+    padding: 30px;
+    margin-top: 20px;
+    z-index: 1
+ }
+
+</style>
+
+<div class="backgroundImage">
+  <div class="backgroundOverlay"></div>
+  <div class = "container logoutContainer">
+    <h1> Successfully logged out </h1>
+
+    <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px; font-size: large;">
+      <a href="{% url 'index'%}">Click here to go home.</a>
+    </div>
+
+  </div>
+
+</div>
+
 {% endblock %}

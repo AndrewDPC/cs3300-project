@@ -2,41 +2,108 @@
 
 {% block content %}
 
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+<style>
 
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %}
+  .backgroundImage {
+
+    background-image: url('https://uploads-ssl.webflow.com/6507242ad3e4e6ff563301b1/6507242bd3e4e6ff563306ad_65030aebb32018840af701b7_64ff6a5c64bd2fd09dcf53ef_61.jpeg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    height: calc(100vh - 76px); 
+    display:flex; 
+    align-items: center;
+
+  }
+
+  /* Used to make background opacity lower and color black */
+  .backgroundOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+  /* Customization for my Login container  */
+  .loginContainer {
+
+    max-width: 500px; 
+    min-height: 200px; 
+    background-color: white; 
+    padding: 30px;
+    margin-top: 20px;
+    z-index: 1
+ }
+
+ .navbar {
+  z-index: 1;
+}
+
+</style>
 
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login">
-    <input type="hidden" name="next" value="{% url 'index' %}">
+
+    <div class="backgroundImage">
+
+      <div class="backgroundOverlay"></div>
+      <div class =" container loginContainer">
+          <!-- Field for the username -->
+          {{form.username.label_tag}}
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="Username input field" name="username">
+          </div>
+          
+          <!-- Field for the password -->
+          {{form.password.label_tag}}
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="Password input field" name="password", id="password">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password')">Show Password</button>
+            </div>
+          </div>
+
+          <!-- Sign in button -->
+          <div style="display: flex; align-items: center; justify-content: center;">
+            <input class="btn btn-primary btn-lg" style="margin-right: 10px; margin-bottom: 6px;" type="submit" value="Sign in">
+            <input type="hidden" name="next" value="{% url 'index' %}">
+          </div>
+
+          <!-- Goes to register page if not a member -->
+          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+            <span style="margin-right: 6px; margin"> Don't have an account? </span>
+            <span> <a href="{% url 'register-page' %}"> Register </a> </span>
+          </div>
+
+          <!-- Form errors -->
+          {% if form.errors %}
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+              <p style="margin-bottom: -10px; color: red; font-weight: bold;">Error: Your username and password didn't match.</p>
+            </div>
+          {% endif %}
+
+
+          <!-- Display success message for registering -->
+          {%for message in messages %} 
+          <p> {{message}} </p>
+          {% endfor %}
+       </div>
+    </div>
+
+      <!-- JavaScript for Password Visibility -->
+      <script>
+        function togglePassword(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+     </script>
+  
   </form>
-
-  {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
-  {# Display success message for registering #}
-  {%for message in messages %} 
-    <p> {{message}} </p>
-  {% endfor %}
 
 {% endblock %}

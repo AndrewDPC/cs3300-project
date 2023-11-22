@@ -3,7 +3,47 @@
 {% block content %}
 
 <style>
-  .starSize {
+
+  .backgroundImage {
+
+    background-image: url('https://uploads-ssl.webflow.com/6507242ad3e4e6ff563301b1/6507242bd3e4e6ff563306ad_65030aebb32018840af701b7_64ff6a5c64bd2fd09dcf53ef_61.jpeg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+    height: calc(100vh - 76px); 
+    display:flex; 
+    align-items: center;
+
+  }
+
+  /* Used to make background opacity lower and color black */
+  .backgroundOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+ /* Customization for the review container  */
+ .formContainer {
+
+  max-width: 800px; 
+  min-height: 400px; 
+  background-color: white; 
+  padding: 30px;
+  margin-top: 20px;
+  z-index: 1
+}
+
+.navbar {
+
+  z-index: 1;
+
+}
+
+.starSize {
     font-size: 24px; 
 }
 
@@ -20,33 +60,51 @@
 <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div style="display: flex; align-items: center; justify-content: center; height: 80vh;">
+<!-- Apply the background -->
+<div class = "backgroundImage">
+  <!-- Apply the overlay-->
+  <div class="backgroundOverlay"></div>
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    
-    <!-- Star rating section -->
-    <div class="starSize" style="margin-bottom: 20px; margin-left: 200px;">
-        <span style="font-weight: bold;">Rate this set: </span>
-        {% for i in '12345' %}
-            <span class="fa fa-star" data-rating="{{ i }}"></span>
-        {% endfor %}
-        <!-- Hidden input to store rating value -->
-        <input type="hidden" name="rating" id="rating" value="{{ form.instance.rating }}">
+    <!-- Create container to hold form elements -->
+    <div class=" container formContainer">
 
-        <!-- Error message -->
-        {% if messages %}
-          {% for message in messages %}
-            <span style="font-size:medium; font-weight: bold; color: red;"> <- {{message}} </span>
-          {% endfor %}
-        {% endif %}
-    </div>
+        <form action="" method="POST">
+          {% csrf_token %}
+          
+          <!-- Display interactive stars -->
+          <div class="starSize mb-4 text-center">
+            
+            <!-- Go through a for loop that will output 5 stars to interact with  -->
+            <span class="mr-2" style="font-weight: bold;">Rate this set:</span>
+            {% for i in '12345' %}
+              <span class="fa fa-star" data-rating="{{ i }}"></span>
+            {% endfor %}
 
-    <!-- Other form fields -->
-    <div style="font-size: 25px;">
-        <table>{{ form.as_table }}</table>
-        <input type="submit" name="Submit" style="margin-left: 490px;">
-        <a class="btn" style =" font-weight: bold; color: red; background-color: gold;  border: 2px solid black;font-family: Verdana;" href="{% url 'set-details' legoSetId %}">Cancel</a>
+            <!-- Hidden input to store rating value -->
+            <input type="hidden" name="rating" id="rating" value="{{ form.instance.rating }}">
+
+            <!-- Error message -->
+            {% if messages %}
+              {% for message in messages %}
+                <span class="font-size-medium font-weight-bold text-danger"> <- {{message}} </span>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <!-- Other form fields -->
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table">
+                    {{ form.as_table }}
+                </table>
+            </div>
+          </div>
+        
+        <!-- Form buttons -->
+        <div class="text-center">
+          <span> <a class="btn btn-danger" style =" font-weight: bold; border: 2px solid black;font-family: Verdana;" href="{% url 'set-details' legoSetId %}">Cancel</a> </span>
+          <span> <input type="submit" name="Submit" style="margin-left: 1px;"> </span>
+        </div>
     </div>
 
   </form>

@@ -38,7 +38,7 @@ class SetDetailView(generic.DetailView):
         context['setImages'] = LegoImages.objects.filter(legoSet=self.object)
 
         #Check if admin is logged in or not
-        if(not self.request.user.is_staff):
+        if(not self.request.user.is_staff and not self.request.user.is_anonymous):
             #Get the current user's member instance
             member = Member.objects.get(user=self.request.user)
 
@@ -47,6 +47,9 @@ class SetDetailView(generic.DetailView):
 
             #Get all reviews associated with the LEGO set that excludes the current member
             context['otherReviews'] = Review.objects.filter(legoSet=self.object).exclude(member=member)
+        else:
+            #Get all reviews associated with the LEGO set
+            context['otherReviews'] = Review.objects.filter(legoSet=self.object)
         
         #Get all the reviews. Used for math
         context['allReviews'] = Review.objects.filter(legoSet=self.object)
@@ -84,9 +87,6 @@ def createReview(request, set_id):
 
     #Check if POST method was requested
     if request.method == 'POST':
-
-        print(request.POST)
-        print(request.POST.get('rating'))
 
         #Create a copy of the POST data
         review_data = request.POST.copy()
@@ -195,8 +195,10 @@ def registerPage(request):
             #Save form to database and store the instance in variable
             user = form.save()
 
-            #Get the username field from the validated data from the form
+            #Get the all fields from the form
             username = form.cleaned_data.get('username')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
 
             #Get the correct group
             group = Group.objects.get(name='member')
@@ -208,7 +210,10 @@ def registerPage(request):
             Member.objects.create(
 
                 user=user,
-                userName = username
+                userName = username,
+                firstName = first_name,
+                lastName = last_name,
+
             )
 
             #Create success message 
