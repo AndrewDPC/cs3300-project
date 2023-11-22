@@ -53,7 +53,7 @@
           <!-- Field for the username -->
           {{form.username.label_tag}}
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="Username input field" name="username">
+            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="Username input field" name="username", id="username">
           </div>
           
           <!-- Field for the password -->
@@ -67,7 +67,7 @@
 
           <!-- Sign in button -->
           <div style="display: flex; align-items: center; justify-content: center;">
-            <input class="btn btn-primary btn-lg" style="margin-right: 10px; margin-bottom: 6px;" type="submit" value="Sign in">
+            <input class="btn btn-primary btn-lg" style="margin-right: 10px; margin-bottom: 6px;" type="submit" value="Sign in", id="signInBtn">
             <input type="hidden" name="next" value="{% url 'index' %}">
           </div>
 
@@ -83,7 +83,6 @@
               <p style="margin-bottom: -10px; color: red; font-weight: bold;">Error: Your username and password didn't match.</p>
             </div>
           {% endif %}
-
 
           <!-- Display success message for registering -->
           {%for message in messages %} 

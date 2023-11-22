@@ -39,8 +39,9 @@
 
               <!-- Will be using cards to display my LEGO sets-->
               <div class="card">
-                <!-- Image -->
-                <img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">
+                
+                <!-- Image  -->
+                <img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">  
 
                 <!-- Information -->
                 <div class="card-body">
@@ -66,7 +67,7 @@
 
                   <!-- Button to view the specific set -->
                   <div class="card-footer" style="text-align: right;">
-                    <a class="btn buttonStyle" href="{{set.get_absolute_url}}" role="button"> Details </a>
+                    <a class="btn buttonStyle" href="{{set.get_absolute_url}}" role="button" id='detailBtn'> Details </a>
                 </div>
 
                 </div>

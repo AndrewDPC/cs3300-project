@@ -281,7 +281,7 @@
                             <!--
                             <a class="btn buttonStyle" href="{% url 'delete-review' review.id %}" role="button">Delete</a>
                              -->
-                            <button type="button" class="btn buttonStyle" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <button type="button" class="btn buttonStyle" data-bs-toggle="modal" data-bs-target="#deleteModal" id="deleteBtn" >
                                 Delete
                             </button>
                         </div>
@@ -313,9 +313,8 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     <form action="{% url 'delete-review' review.id %}" method="post">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-danger" id='deleteModalBtn'>Delete</button>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -328,7 +327,7 @@
              <!-- Offer ability to create review. Users can only create one review per set  -->
             <div style="display: flex; justify-content: space-between; align-items: center;">
             <h1 class = "reviewHeaders">My Reviews:</h1>
-            <a class="btn buttonStyle" style="margin-top= -50;" href="{% url 'create-review' legoset.id %}" role="button">Create Review</a>
+            <a class="btn buttonStyle" style="margin-top= -50;" href="{% url 'create-review' legoset.id %}" role="button" id="createBtn">Create Review</a>
             </div>
             <p style="text-align: center; padding-bottom: 10px; font-size: 20px;">You have not made a review for this set yet!</p>
 

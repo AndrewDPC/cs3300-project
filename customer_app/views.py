@@ -71,8 +71,6 @@ class SetDetailView(generic.DetailView):
             
             #Get the overall rating in number form. (5-star rating system)
             context['overallRatingNum'] = (totalStars/actualStars) * 5
-
-
         return context
 
       

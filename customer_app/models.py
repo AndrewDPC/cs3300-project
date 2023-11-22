@@ -12,7 +12,7 @@ class LegoSet(models.Model):
     description = models.TextField(max_length= 600)
 
     #Some important information to include for a LEGO set 
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(blank=True)
     ageRating = models.CharField(max_length=3)
     setNumber = models.CharField(max_length=7)
     totalBrickCount = models.CharField(max_length=4)
