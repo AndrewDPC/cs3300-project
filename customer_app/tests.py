@@ -108,13 +108,6 @@ class UserFailsafe(TestCase):
         #Check if user was redirected to the homepage
         self.assertRedirects(response, reverse('index'))
 
-
-'''
-Important: for this test to work, need to delete:
-<!-- Image  -->
-<img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">  
-To make this work.
-'''
 #Test if user can successfully create a review 
 class UserCreateReviewTest(StaticLiveServerTestCase):
 
@@ -213,13 +206,6 @@ class UserCreateReviewTest(StaticLiveServerTestCase):
         submitBtn.click()
         sleep(3)
 
-
-'''
-Important: for this test to work, need to delete:
-<!-- Image  -->
-<img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">  
-To make this work.
-'''
 #Test if user can successfully delete a review they just created
 class UserDeleteReviewTest(StaticLiveServerTestCase):
 
@@ -312,8 +298,9 @@ class UserDeleteReviewTest(StaticLiveServerTestCase):
         '''
         Step 5: Delete the review that was just created
         '''
+        sleep(2)
         self.selenium.execute_script("window.scrollBy(0, window.innerHeight / 2);") #Force scroll so that element can be seen
-        sleep(3)
+        sleep(1)
         deleteBtn = self.selenium.find_element(By.ID, 'deleteBtn')
         deleteBtn.click()
         sleep(3)

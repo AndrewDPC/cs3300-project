@@ -1,4 +1,5 @@
 {% extends 'customer_app/baseTemplate.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -41,7 +42,7 @@
               <div class="card">
                 
                 <!-- Image  -->
-                <img src="{{ set.thumbnail.url }}" class="card-img-top" height="320">  
+                <img src="{% if set.thumbnail %}{{ set.thumbnail.url }}{% endif %}" class="card-img-top" height="320" alt="THUMBNAIL UNAVAILABLE">
 
                 <!-- Information -->
                 <div class="card-body">

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customer_app',
     'bootstrap5',
+    'coverage',
 ]
 
 # Add support for authenticating users
