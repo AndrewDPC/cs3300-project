@@ -213,7 +213,6 @@ def registerPage(request):
                 userName = username,
                 firstName = first_name,
                 lastName = last_name,
-
             )
 
             #Create success message 

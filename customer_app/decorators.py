@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import Review
+from .models import Review, LegoSet
 
 #Decorator for creating, editing, and deleting reviews
 def allowedUsers(allowedRoles = []):
