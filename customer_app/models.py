@@ -9,7 +9,7 @@ class LegoSet(models.Model):
 
     #Title and description of the set 
     title = models.CharField(max_length=100)
-    description = models.TextField(max_length= 400)
+    description = models.TextField(max_length= 600)
 
     #Some important information to include for a LEGO set 
     thumbnail = models.ImageField()
