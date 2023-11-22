@@ -1,36 +1,50 @@
+#Name of workflow
 name: Django CI
 
+#Workflow is triggered whenver main is pushed 
 on:
   push:
     branches:
       - main  
 
+#Jobs to be executed in the workflow
 jobs:
+  #Define a job called build 
   build:
+
+    #Specify the operating system for the job
     runs-on: windows-latest
 
+    #Define a matrix strategy to run the job on different versions of python (I used both which is why I included two versions)
     strategy:
       matrix:
         python-version: [3.11.5, 3.11.6]
-
+    
+    #Define the steps needed to complete this job
     steps:
+
+      #Checkout the code repository
       - name: Checkout code
         uses: actions/checkout@v2
 
+      #Set up the python environment
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: 'x64'
-            
+      
+      #Install project dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      
+      #Finally run the tests
       - name: Run tests
         run: |
           coverage run manage.py test
-
+          
+      #While also generating a coverage report 
       - name: Report coverage
         run: coverage report
