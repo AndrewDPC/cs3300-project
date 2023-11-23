@@ -272,7 +272,7 @@
                             {% for i in '12345' %}
                                 <span class="fa fa-star {% if i|add:0 <= review.rating %}starFillColor{% endif %}" ></span>
                             {% endfor %}
-                            <span> "{{review.title}}" </span>
+                            <span id ="reviewTitle"> "{{review.title}}" </span>
                             <p style="font-size: small;"> Review created on  {{ review.dateCreated|date:"F j, Y" }}</p>
                         </div>
 

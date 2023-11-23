@@ -205,6 +205,10 @@ class UserCreateReviewTest(StaticLiveServerTestCase):
         submitBtn = self.selenium.find_element(By.ID, 'submitBtn')
         submitBtn.click()
         sleep(3)
+        
+        #Check if review is on the page
+        reviewTitle = self.selenium.find_element(By.ID, 'reviewTitle')
+        self.assertTrue(reviewTitle.is_displayed())
 
 #Test if user can successfully delete a review they just created
 class UserDeleteReviewTest(StaticLiveServerTestCase):
@@ -312,6 +316,10 @@ class UserDeleteReviewTest(StaticLiveServerTestCase):
         deleteBtnModal.click()
         sleep(3)
 
+
+        #Check if review is not on
+        reviewTitle = self.selenium.find_elements(By.ID, 'reviewTitle')
+        self.assertTrue(not reviewTitle)
       
         
 
