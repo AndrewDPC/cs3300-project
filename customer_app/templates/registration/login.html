@@ -86,7 +86,9 @@
 
           <!-- Display success message for registering -->
           {%for message in messages %} 
-          <p> {{message}} </p>
+            <div style="display: flex; align-items: center; justify-content: center; font-weight: bold;">
+              {{message}} 
+            </div>
           {% endfor %}
        </div>
     </div>
